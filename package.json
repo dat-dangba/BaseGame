@@ -5,20 +5,6 @@
   "author": "datdb",
   "version": "1.0.0",
   "website": "https://github.com/dat-dangba/BaseGame",
-  "scopedRegistries": [
-    {
-      "name": "datdb",
-      "url": "https://registry.npmjs.org",
-      "scopes": [
-        "com.datdb"
-      ]
-    }
-  ],
-  "dependencies": {
-    "com.datdb.baseevent": "1.0.0",
-    "com.datdb.networktime": "1.0.0",
-    "com.datdb.savegame": "1.0.0"
-  },
   "samples": [
     {
       "displayName": "Energy Sample",
