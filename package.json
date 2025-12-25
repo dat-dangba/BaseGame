@@ -5,10 +5,19 @@
   "author": "datdb",
   "version": "1.0.0",
   "website": "https://github.com/dat-dangba/BaseGame",
+  "scopedRegistries": [
+    {
+      "name": "datdb",
+      "url": "https://registry.npmjs.org",
+      "scopes": [
+        "com.datdb"
+      ]
+    }
+  ],
   "dependencies": {
-    "com.datdb.baseevent": "https://github.com/dat-dangba/BaseEvent.git",
-    "com.datdb.networktime": "https://github.com/dat-dangba/NetworkTime.git",
-    "com.datdb.savegame": "https://github.com/dat-dangba/SaveGame.git"
+    "com.datdb.baseevent": "1.0.0",
+    "com.datdb.networktime": "1.0.0",
+    "com.datdb.savegame": "1.0.0"
   },
   "samples": [
     {
