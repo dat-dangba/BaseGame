@@ -1,0 +1,13 @@
+{
+  "name": "com.datdb.basegame",
+  "displayName": "DBD-BaseGame",
+  "description": "Base Game",
+  "author": "datdb",
+  "version": "1.0.0",
+  "website": "https://github.com/dat-dangba/BaseGame",
+  "dependencies": {
+    "com.datdb.baseevent": "https://github.com/dat-dangba/BaseEvent.git",
+    "com.datdb.networktime": "https://github.com/dat-dangba/NetworkTime.git",
+    "com.datdb.savegame": "https://github.com/dat-dangba/SaveGame.git"
+  }
+}

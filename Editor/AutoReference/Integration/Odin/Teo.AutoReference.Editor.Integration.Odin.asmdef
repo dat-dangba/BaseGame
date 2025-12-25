@@ -1,0 +1,27 @@
+﻿{
+  "name": "Teo.AutoReference.Editor.Integration.Odin",
+  "references": [
+    "Teo.AutoReference",
+    "Teo.AutoReference.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "Sirenix.OdinInspector.Attributes.dll",
+    "Sirenix.OdinInspector.Editor.dll",
+    "Sirenix.Utilities.Editor.dll",
+    "Sirenix.Utilities.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "ODIN_INSPECTOR",
+    "!AUTOREF_DISABLE_ONINSPECT",
+    "AUTOREF_ODIN_INSPECTOR"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

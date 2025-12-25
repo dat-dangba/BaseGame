@@ -1,0 +1,23 @@
+﻿{
+  "name": "Teo.AutoReference.Editor.Integration.TriInspector",
+  "references": [
+    "Teo.AutoReference",
+    "Teo.AutoReference.Editor",
+    "TriInspector",
+    "TriInspector.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "AUTOREF_TRIINSPECTOR",
+    "!AUTOREF_DISABLE_ONINSPECT"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
