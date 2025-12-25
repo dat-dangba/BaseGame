@@ -9,5 +9,22 @@
     "com.datdb.baseevent": "https://github.com/dat-dangba/BaseEvent.git",
     "com.datdb.networktime": "https://github.com/dat-dangba/NetworkTime.git",
     "com.datdb.savegame": "https://github.com/dat-dangba/SaveGame.git"
-  }
+  },
+  "samples": [
+    {
+      "displayName": "Energy Sample",
+      "description": "Energy Sample",
+      "path": "Samples~/Energy Sample"
+    },
+    {
+      "displayName": "Sound Sample",
+      "description": "Sound Sample",
+      "path": "Samples~/Sound Sample"
+    },
+    {
+      "displayName": "UI Sample",
+      "description": "UI Sample",
+      "path": "Samples~/UI Sample"
+    }
+  ]
 }
