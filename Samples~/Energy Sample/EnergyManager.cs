@@ -56,7 +56,7 @@ namespace EnergySample
                 data.Energy = 5;
                 data.LastRegenTime = ""; //GetDateTime().ToString("o");
                 data.UnlimitedEndTime = ""; //GetDateTime().ToString("o");
-                data.NeedConsumeEnergy = true;
+                data.NeedConsumeEnergy = false;
                 return data;
             }
 
