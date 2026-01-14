@@ -15,6 +15,16 @@ public static class CreateFitterContextMenu
         Create(rectTransform, "FitterLeft", new Vector2(0f, 1f));
         Create(rectTransform, "FitterRight", new Vector2(1f, 1f));
         Create(rectTransform, "FitterBot", new Vector2(0.5f, 0f));
+        Create(rectTransform, "FitterCenter", new Vector2(0.5f, 0.5f));
+    }
+
+    [MenuItem("CONTEXT/RectTransform/Create Fitter Center")]
+    private static void CreateFitterCenter(MenuCommand command)
+    {
+        RectTransform rectTransform = GetRectTransform(command);
+        if (rectTransform == null) return;
+
+        Create(rectTransform, "FitterCenter", new Vector2(0.5f, 0.5f));
     }
 
     [MenuItem("CONTEXT/RectTransform/Create Fitter Top")]

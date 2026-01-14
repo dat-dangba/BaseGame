@@ -107,10 +107,6 @@ public abstract class BaseUIManager<INSTANCE> : BaseMonoBehaviour where INSTANCE
     /// <typeparam name="T"></typeparam>
     public virtual void Show<T>(Action<T> OnPreShow = null) where T : BaseUI
     {
-        // T ui = GetUI<T>();
-        // OnPreShow?.Invoke(ui);
-        // ui.Show();
-        // BringToFront(ui);
         Show(typeof(T), baseUI => { OnPreShow?.Invoke((T)baseUI); });
     }
 
@@ -167,10 +163,6 @@ public abstract class BaseUIManager<INSTANCE> : BaseMonoBehaviour where INSTANCE
     public virtual void Hide<T>(Action OnInvisible = null) where T : BaseUI
     {
         Hide(typeof(T), OnInvisible);
-        // if (IsUIDisplayed<T>())
-        // {
-        //     uiLoaded[typeof(T)].Hide(OnInvisible);
-        // }
     }
 
     /// <summary>
@@ -215,7 +207,6 @@ public abstract class BaseUIManager<INSTANCE> : BaseMonoBehaviour where INSTANCE
     public virtual bool IsUILoaded<T>() where T : BaseUI
     {
         return IsUILoaded(typeof(T));
-        // return uiLoaded.ContainsKey(typeof(T)) && uiLoaded[typeof(T)] != null;
     }
 
     /// <summary>
@@ -236,7 +227,6 @@ public abstract class BaseUIManager<INSTANCE> : BaseMonoBehaviour where INSTANCE
     public virtual bool IsUIDisplayed<T>() where T : BaseUI
     {
         return IsUIDisplayed(typeof(T));
-        // return IsUILoaded<T>() && uiLoaded[typeof(T)].gameObject.activeSelf;
     }
 
     /// <summary>
