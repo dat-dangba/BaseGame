@@ -1,49 +1,50 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Singleton<INSTANCE> : BaseMonoBehaviour where INSTANCE : MonoBehaviour
+namespace DBD.BaseGame
 {
-    [SerializeField] protected bool dontDestroyOnLoad = true;
-
-    private static INSTANCE instance;
-
-    public static INSTANCE Instance
+    public class Singleton<INSTANCE> : BaseMonoBehaviour where INSTANCE : MonoBehaviour
     {
-        get
+        [SerializeField] protected bool dontDestroyOnLoad = true;
+
+        private static INSTANCE instance;
+
+        public static INSTANCE Instance
         {
-            if (instance != null) return instance;
-            instance = FindAnyObjectByType<INSTANCE>();
-            if (instance != null) return instance;
-            GameObject singleton = new(typeof(INSTANCE).Name);
-            instance = singleton.AddComponent<INSTANCE>();
-            DontDestroyOnLoad(singleton);
-
-            return instance;
-        }
-    }
-
-    protected override void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this as INSTANCE;
-
-            if (!dontDestroyOnLoad) return;
-
-            Transform root = transform.root;
-            if (root != transform)
+            get
             {
-                DontDestroyOnLoad(root);
+                if (instance != null) return instance;
+                instance = FindAnyObjectByType<INSTANCE>();
+                if (instance != null) return instance;
+                GameObject singleton = new(typeof(INSTANCE).Name);
+                instance = singleton.AddComponent<INSTANCE>();
+                DontDestroyOnLoad(singleton);
+
+                return instance;
+            }
+        }
+
+        protected override void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this as INSTANCE;
+
+                if (!dontDestroyOnLoad) return;
+
+                Transform root = transform.root;
+                if (root != transform)
+                {
+                    DontDestroyOnLoad(root);
+                }
+                else
+                {
+                    DontDestroyOnLoad(gameObject);
+                }
             }
             else
             {
-                DontDestroyOnLoad(gameObject);
+                Destroy(gameObject);
             }
-        }
-        else
-        {
-            Destroy(gameObject);
         }
     }
 }

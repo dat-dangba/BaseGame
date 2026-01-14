@@ -1,10 +1,13 @@
 using System;
 
-[Serializable]
-public class EnergyData
+namespace DBD.BaseGame
 {
-    public int Energy;
-    public string LastRegenTime;
-    public string UnlimitedEndTime;
-    public bool NeedConsumeEnergy;
+    [Serializable]
+    public class EnergyData
+    {
+        public int Energy;
+        public string LastRegenTime;
+        public string UnlimitedEndTime;
+        public bool NeedConsumeEnergy;
+    }
 }

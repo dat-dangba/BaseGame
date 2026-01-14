@@ -2,7 +2,7 @@ using Teo.AutoReference;
 using TMPro;
 using UnityEngine;
 
-namespace SoundSample
+namespace DBD.BaseGame.Sample
 {
     public class SettingSfxButton : BaseButton
     {

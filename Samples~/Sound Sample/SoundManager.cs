@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SoundSample
+namespace DBD.BaseGame.Sample
 {
     public class SoundManager : BaseSoundManager<SoundManager>
     {

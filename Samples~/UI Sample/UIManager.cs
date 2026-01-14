@@ -1,7 +1,7 @@
 using Teo.AutoReference;
 using UnityEngine;
 
-namespace UISample
+namespace DBD.BaseGame.Sample
 {
     public class UIManager : BaseUIManager<UIManager>
     {

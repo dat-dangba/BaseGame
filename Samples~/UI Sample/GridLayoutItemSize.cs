@@ -2,29 +2,33 @@ using Teo.AutoReference;
 using UnityEngine;
 using UnityEngine.UI;
 
-#if UNITY_EDITOR
-[ExecuteAlways]
-#endif
-public class GridLayoutItemSize : BaseMonoBehaviour
+
+namespace DBD.BaseGame.Sample
 {
-    [SerializeField, Get] private RectTransform rect;
-    [SerializeField, Get] private GridLayoutGroup gridLayoutGroup;
-
-    protected void OnRectTransformDimensionsChange()
+#if UNITY_EDITOR
+    [ExecuteAlways]
+#endif
+    public class GridLayoutItemSize : BaseMonoBehaviour
     {
-        CalculateIconSize();
-    }
+        [SerializeField, Get] private RectTransform rect;
+        [SerializeField, Get] private GridLayoutGroup gridLayoutGroup;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        CalculateIconSize();
-    }
+        protected void OnRectTransformDimensionsChange()
+        {
+            CalculateIconSize();
+        }
 
-    private void CalculateIconSize()
-    {
-        float width = rect.rect.width;
-        Vector2 size = new Vector2(width, width);
-        gridLayoutGroup.cellSize = size;
+        protected override void Awake()
+        {
+            base.Awake();
+            CalculateIconSize();
+        }
+
+        private void CalculateIconSize()
+        {
+            float width = rect.rect.width;
+            Vector2 size = new Vector2(width, width);
+            gridLayoutGroup.cellSize = size;
+        }
     }
 }

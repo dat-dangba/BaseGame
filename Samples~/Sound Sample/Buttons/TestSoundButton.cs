@@ -1,4 +1,4 @@
-namespace SoundSample
+namespace DBD.BaseGame.Sample
 {
     public class TestSoundButton : BaseButton
     {

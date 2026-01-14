@@ -4,98 +4,101 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class BaseButton : BaseMonoBehaviour, IPointerDownHandler, IPointerUpHandler
+namespace DBD.BaseGame
 {
-    [SerializeField, Get] protected Button button;
-
-    protected override void OnAfterSyncAttribute()
+    public abstract class BaseButton : BaseMonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
-        button.transition = Selectable.Transition.None;
-    }
+        [SerializeField, Get] protected Button button;
 
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-        if (button)
+        protected override void OnAfterSyncAttribute()
         {
-            button.transform.localScale = Vector3.one;
+            button.transition = Selectable.Transition.None;
         }
-    }
 
-    protected override void Start()
-    {
-        base.Start();
-        AddOnClickEvent();
-    }
-
-    protected virtual void AddOnClickEvent()
-    {
-        button.onClick.AddListener(OnClickListener);
-    }
-
-    protected virtual void OnClickListener()
-    {
-        OnClick();
-    }
-
-    void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
-    {
-        OnPointerDown(eventData);
-    }
-
-    void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
-    {
-        OnPointerUp(eventData);
-    }
-
-    protected virtual void OnPointerDown(PointerEventData eventData)
-    {
-        if (!IsAnim()) return;
-
-        StopAllCoroutines();
-        StartCoroutine(AnimPointer(true));
-    }
-
-    protected virtual void OnPointerUp(PointerEventData eventData)
-    {
-        if (!IsAnim()) return;
-
-        StopAllCoroutines();
-        StartCoroutine(AnimPointer(false));
-    }
-
-    private bool IsAnim()
-    {
-        return button.interactable && IsUseAnim();
-    }
-
-    protected virtual bool IsUseAnim()
-    {
-        return true;
-    }
-
-    private IEnumerator AnimPointer(bool isDown)
-    {
-        float temp = 0f;
-        while (temp < 0.1f)
+        protected override void OnDisable()
         {
-            temp += Time.unscaledDeltaTime;
-            temp = Mathf.Clamp(temp, 0, 0.1f);
-
-            float f;
-            if (isDown)
+            base.OnDisable();
+            if (button)
             {
-                f = 1 - temp;
+                button.transform.localScale = Vector3.one;
             }
-            else
-            {
-                f = 0.9f + temp;
-            }
-
-            transform.localScale = Vector3.one * f;
-            yield return null;
         }
-    }
 
-    protected abstract void OnClick();
+        protected override void Start()
+        {
+            base.Start();
+            AddOnClickEvent();
+        }
+
+        protected virtual void AddOnClickEvent()
+        {
+            button.onClick.AddListener(OnClickListener);
+        }
+
+        protected virtual void OnClickListener()
+        {
+            OnClick();
+        }
+
+        void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+        {
+            OnPointerDown(eventData);
+        }
+
+        void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
+        {
+            OnPointerUp(eventData);
+        }
+
+        protected virtual void OnPointerDown(PointerEventData eventData)
+        {
+            if (!IsAnim()) return;
+
+            StopAllCoroutines();
+            StartCoroutine(AnimPointer(true));
+        }
+
+        protected virtual void OnPointerUp(PointerEventData eventData)
+        {
+            if (!IsAnim()) return;
+
+            StopAllCoroutines();
+            StartCoroutine(AnimPointer(false));
+        }
+
+        private bool IsAnim()
+        {
+            return button.interactable && IsUseAnim();
+        }
+
+        protected virtual bool IsUseAnim()
+        {
+            return true;
+        }
+
+        private IEnumerator AnimPointer(bool isDown)
+        {
+            float temp = 0f;
+            while (temp < 0.1f)
+            {
+                temp += Time.unscaledDeltaTime;
+                temp = Mathf.Clamp(temp, 0, 0.1f);
+
+                float f;
+                if (isDown)
+                {
+                    f = 1 - temp;
+                }
+                else
+                {
+                    f = 0.9f + temp;
+                }
+
+                transform.localScale = Vector3.one * f;
+                yield return null;
+            }
+        }
+
+        protected abstract void OnClick();
+    }
 }

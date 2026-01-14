@@ -1,108 +1,111 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseSpawner<I, T> : BaseMonoBehaviour where T : Component where I : MonoBehaviour
+namespace DBD.BaseGame
 {
-    [SerializeField] protected bool dontDestroyOnLoad;
-    [SerializeField] protected int spawnedCount;
-    [SerializeField] protected List<T> poolObjs = new();
-
-    #region Singleton
-
-    private static I instance;
-
-    public static I Instance
+    public abstract class BaseSpawner<I, T> : BaseMonoBehaviour where T : Component where I : MonoBehaviour
     {
-        get
-        {
-            if (instance != null) return instance;
-            instance = FindFirstObjectByType<I>();
-            if (instance != null) return instance;
-            GameObject singleton = new(typeof(I).Name);
-            instance = singleton.AddComponent<I>();
-            DontDestroyOnLoad(singleton);
+        [SerializeField] protected bool dontDestroyOnLoad;
+        [SerializeField] protected int spawnedCount;
+        [SerializeField] protected List<T> poolObjs = new();
 
-            return instance;
-        }
-    }
+        #region Singleton
 
-    protected override void Awake()
-    {
-        if (instance == null)
+        private static I instance;
+
+        public static I Instance
         {
-            instance = this as I;
-            if (!dontDestroyOnLoad) return;
-            Transform root = transform.root;
-            if (root != transform)
+            get
             {
-                DontDestroyOnLoad(root);
+                if (instance != null) return instance;
+                instance = FindFirstObjectByType<I>();
+                if (instance != null) return instance;
+                GameObject singleton = new(typeof(I).Name);
+                instance = singleton.AddComponent<I>();
+                DontDestroyOnLoad(singleton);
+
+                return instance;
+            }
+        }
+
+        protected override void Awake()
+        {
+            if (instance == null)
+            {
+                instance = this as I;
+                if (!dontDestroyOnLoad) return;
+                Transform root = transform.root;
+                if (root != transform)
+                {
+                    DontDestroyOnLoad(root);
+                }
+                else
+                {
+                    DontDestroyOnLoad(gameObject);
+                }
             }
             else
             {
-                DontDestroyOnLoad(gameObject);
+                Destroy(gameObject);
             }
         }
-        else
+
+        #endregion
+
+        public virtual T Spawn(Vector3 spawnPos, bool show = false)
         {
-            Destroy(gameObject);
+            return Spawn(spawnPos, Quaternion.identity, show);
         }
-    }
 
-    #endregion
-
-    public virtual T Spawn(Vector3 spawnPos, bool show = false)
-    {
-        return Spawn(spawnPos, Quaternion.identity, show);
-    }
-
-    public virtual T Spawn(Vector3 spawnPos, Quaternion rotation, bool show = false)
-    {
-        T newPrefab = GetObjectFromPool(show);
-        newPrefab.transform.SetPositionAndRotation(spawnPos, rotation);
-        spawnedCount++;
-
-        return newPrefab.GetComponent<T>();
-    }
-
-    protected virtual T GetObjectFromPool(bool show)
-    {
-        if (poolObjs.Count > 0)
+        public virtual T Spawn(Vector3 spawnPos, Quaternion rotation, bool show = false)
         {
-            if (!poolObjs[0].gameObject.activeInHierarchy)
+            T newPrefab = GetObjectFromPool(show);
+            newPrefab.transform.SetPositionAndRotation(spawnPos, rotation);
+            spawnedCount++;
+
+            return newPrefab.GetComponent<T>();
+        }
+
+        protected virtual T GetObjectFromPool(bool show)
+        {
+            if (poolObjs.Count > 0)
             {
-                T t = poolObjs[0];
-                t.gameObject.SetActive(show);
-                poolObjs.Remove(poolObjs[0]);
-                return t;
+                if (!poolObjs[0].gameObject.activeInHierarchy)
+                {
+                    T t = poolObjs[0];
+                    t.gameObject.SetActive(show);
+                    poolObjs.Remove(poolObjs[0]);
+                    return t;
+                }
             }
+
+            T newPrefab = Instantiate(GetPrefab(), transform);
+            newPrefab.gameObject.SetActive(show);
+            newPrefab.name = GetPrefab().name;
+            return newPrefab;
         }
 
-        T newPrefab = Instantiate(GetPrefab(), transform);
-        newPrefab.gameObject.SetActive(show);
-        newPrefab.name = GetPrefab().name;
-        return newPrefab;
-    }
-
-    public virtual void Despawn(T obj)
-    {
-        if (poolObjs.Contains(obj)) return;
-
-        poolObjs.Add(obj);
-        obj.gameObject.SetActive(false);
-        spawnedCount--;
-    }
-
-    public virtual void DespawnAll()
-    {
-        for (int i = 0; i < transform.childCount; i++)
+        public virtual void Despawn(T obj)
         {
-            Transform child = transform.GetChild(i);
-            if (child.gameObject.activeInHierarchy)
+            if (poolObjs.Contains(obj)) return;
+
+            poolObjs.Add(obj);
+            obj.gameObject.SetActive(false);
+            spawnedCount--;
+        }
+
+        public virtual void DespawnAll()
+        {
+            for (int i = 0; i < transform.childCount; i++)
             {
-                Despawn(child.GetComponent<T>());
+                Transform child = transform.GetChild(i);
+                if (child.gameObject.activeInHierarchy)
+                {
+                    Despawn(child.GetComponent<T>());
+                }
             }
         }
-    }
 
-    protected abstract T GetPrefab();
+        protected abstract T GetPrefab();
+    }
 }

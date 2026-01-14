@@ -2,12 +2,15 @@ using Teo.AutoReference;
 using TMPro;
 using UnityEngine;
 
-public abstract class BaseText : BaseMonoBehaviour
+namespace DBD.BaseGame
 {
-    [SerializeField, Get] protected TextMeshProUGUI text;
-
-    public virtual void SetText(string t)
+    public abstract class BaseText : BaseMonoBehaviour
     {
-        text.text = t;
+        [SerializeField, Get] protected TextMeshProUGUI text;
+
+        public virtual void SetText(string t)
+        {
+            text.text = t;
+        }
     }
 }

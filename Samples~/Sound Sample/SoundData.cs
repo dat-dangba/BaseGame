@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SoundSample
+namespace DBD.BaseGame.Sample
 {
     [CreateAssetMenu(fileName = "New SoundData", menuName = "ScriptableObject/New SoundData", order = 1)]
     public class SoundData : ScriptableObject

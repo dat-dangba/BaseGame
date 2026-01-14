@@ -2,7 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 
-namespace EnergySample
+namespace DBD.BaseGame.Sample
 {
     public class EnergyManager : BaseEnergyManager<EnergyManager>
     {

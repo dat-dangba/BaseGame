@@ -3,145 +3,148 @@ using System.Collections;
 using Teo.AutoReference;
 using UnityEngine;
 
-[RequireComponent(typeof(CanvasGroup))]
-public abstract class BaseUI : BaseMonoBehaviour
+namespace DBD.BaseGame
 {
-    [SerializeField] private bool destroyOnHide;
-
-    [SerializeField, GetInChildren, Name("Container")]
-    private Transform container;
-
-    [SerializeField, Get] private CanvasGroup canvasGroup;
-
-    private const float durationAnim = 0.3f;
-
-    protected virtual void SetUp()
+    [RequireComponent(typeof(CanvasGroup))]
+    public abstract class BaseUI : BaseMonoBehaviour
     {
-    }
+        [SerializeField] private bool destroyOnHide;
 
-    protected virtual bool IsUseAnim()
-    {
-        return true;
-    }
+        [SerializeField, GetInChildren, Name("Container")]
+        private Transform container;
 
-    private void SetInteractable(bool b)
-    {
-        if (!canvasGroup) return;
-        canvasGroup.interactable = b;
-    }
+        [SerializeField, Get] private CanvasGroup canvasGroup;
 
-    #region Show
+        private const float durationAnim = 0.3f;
 
-    public void Show()
-    {
-        if (!IsUseAnim())
+        protected virtual void SetUp()
         {
-            ShowImmediately();
-            return;
         }
 
-        SetInteractable(false);
-
-        SetUp();
-        gameObject.SetActive(true);
-        StartCoroutine(AnimShow());
-    }
-
-    public void ShowImmediately()
-    {
-        SetUp();
-        gameObject.SetActive(true);
-
-        SetInteractable(true);
-        if (!container) return;
-        container.localScale = Vector3.one;
-    }
-
-    private IEnumerator AnimShow()
-    {
-        if (container)
+        protected virtual bool IsUseAnim()
         {
-            container.localScale = Vector3.zero;
-            float time = 0;
-            while (time < durationAnim)
+            return true;
+        }
+
+        private void SetInteractable(bool b)
+        {
+            if (!canvasGroup) return;
+            canvasGroup.interactable = b;
+        }
+
+        #region Show
+
+        public void Show()
+        {
+            if (!IsUseAnim())
             {
-                float t = time / durationAnim;
-                t = EaseOutBack(t);
-                container.localScale = new Vector3(t, t, t);
-                time += Time.unscaledDeltaTime;
-                yield return null;
+                ShowImmediately();
+                return;
             }
 
+            SetInteractable(false);
+
+            SetUp();
+            gameObject.SetActive(true);
+            StartCoroutine(AnimShow());
+        }
+
+        public void ShowImmediately()
+        {
+            SetUp();
+            gameObject.SetActive(true);
+
+            SetInteractable(true);
+            if (!container) return;
             container.localScale = Vector3.one;
         }
 
-        SetInteractable(true);
-    }
-
-    private float EaseOutBack(float t, float s = 1.70158f)
-    {
-        return 1 + (t - 1) * (t - 1) * ((s + 1) * (t - 1) + s);
-    }
-
-    #endregion
-
-    #region Hide
-
-    public void Hide(Action OnInvisible = null)
-    {
-        SetInteractable(false);
-        if (!IsUseAnim())
+        private IEnumerator AnimShow()
         {
-            HideImmediately();
-            return;
-        }
-
-        StartCoroutine(AnimHide(OnInvisible));
-    }
-
-    public void HideImmediately()
-    {
-        Invisible();
-    }
-
-    private void Invisible()
-    {
-        SetInteractable(true);
-        if (destroyOnHide)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            gameObject.SetActive(false);
-        }
-    }
-
-    private IEnumerator AnimHide(Action OnInvisible)
-    {
-        if (container)
-        {
-            float time = durationAnim;
-            while (time > 0)
+            if (container)
             {
-                float t = time / durationAnim;
-                t = EaseInBack(t);
-                container.localScale = new Vector3(t, t, t);
-                time -= Time.unscaledDeltaTime;
-                yield return null;
+                container.localScale = Vector3.zero;
+                float time = 0;
+                while (time < durationAnim)
+                {
+                    float t = time / durationAnim;
+                    t = EaseOutBack(t);
+                    container.localScale = new Vector3(t, t, t);
+                    time += Time.unscaledDeltaTime;
+                    yield return null;
+                }
+
+                container.localScale = Vector3.one;
             }
 
-            container.localScale = Vector3.zero;
+            SetInteractable(true);
         }
 
-        Invisible();
-        OnInvisible?.Invoke();
-    }
+        private float EaseOutBack(float t, float s = 1.70158f)
+        {
+            return 1 + (t - 1) * (t - 1) * ((s + 1) * (t - 1) + s);
+        }
 
-    private float EaseInBack(float t, float s = 1.70158f)
-    {
-        return 1 - ((1 - t) * (1 - t) * ((s + 1) * (1 - t) - s));
-    }
+        #endregion
 
-    #endregion
+        #region Hide
+
+        public void Hide(Action OnInvisible = null)
+        {
+            SetInteractable(false);
+            if (!IsUseAnim())
+            {
+                HideImmediately();
+                return;
+            }
+
+            StartCoroutine(AnimHide(OnInvisible));
+        }
+
+        public void HideImmediately()
+        {
+            Invisible();
+        }
+
+        private void Invisible()
+        {
+            SetInteractable(true);
+            if (destroyOnHide)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
+        private IEnumerator AnimHide(Action OnInvisible)
+        {
+            if (container)
+            {
+                float time = durationAnim;
+                while (time > 0)
+                {
+                    float t = time / durationAnim;
+                    t = EaseInBack(t);
+                    container.localScale = new Vector3(t, t, t);
+                    time -= Time.unscaledDeltaTime;
+                    yield return null;
+                }
+
+                container.localScale = Vector3.zero;
+            }
+
+            Invisible();
+            OnInvisible?.Invoke();
+        }
+
+        private float EaseInBack(float t, float s = 1.70158f)
+        {
+            return 1 - ((1 - t) * (1 - t) * ((s + 1) * (1 - t) - s));
+        }
+
+        #endregion
+    }
 }

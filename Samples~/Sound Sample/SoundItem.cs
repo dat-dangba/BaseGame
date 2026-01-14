@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace SoundSample
+namespace DBD.BaseGame.Sample
 {
     [Serializable]
     public class SoundItem
