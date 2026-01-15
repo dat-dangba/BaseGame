@@ -1,0 +1,23 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class #SCRIPTNAME# : Spawner<Transform>
+{
+    private static #SCRIPTNAME# instance;
+    public static #SCRIPTNAME# Instance => instance;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
+
+    protected override string GetPrefabPath()
+    {
+        return "";
+    }
+}
