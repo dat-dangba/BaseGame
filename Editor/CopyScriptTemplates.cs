@@ -43,6 +43,11 @@ namespace DBD.BaseGame
             EditorPrefs.SetBool(InstalledKey, true);
             AssetDatabase.Refresh();
             Debug.Log("datdb - [DBD] Script Templates copied");
+
+            EditorUtility.DisplayDialog(
+                "DBD Base Game",
+                "Script Templates đã được cài đặt.\nVui lòng restart Unity Editor để sử dụng.",
+                "OK");
         }
     }
 }
