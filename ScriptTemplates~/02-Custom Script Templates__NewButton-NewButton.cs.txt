@@ -1,0 +1,8 @@
+using DBD.BaseGame;
+
+public class #SCRIPTNAME# : BaseButton
+{
+    protected override void OnClick()
+    {
+    }
+}

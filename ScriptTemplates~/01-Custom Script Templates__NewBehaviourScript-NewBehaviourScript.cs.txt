@@ -1,0 +1,5 @@
+using DBD.BaseGame;
+
+public class #SCRIPTNAME# : BaseMonoBehaviour
+{
+}

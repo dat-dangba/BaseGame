@@ -1,0 +1,10 @@
+using DBD.BaseGame;
+using UnityEngine;
+
+public class #SCRIPTNAME# : BaseSpawner<#SCRIPTNAME#, Transform>
+{
+    protected override Transform GetPrefab()
+    {
+        return null;
+    }
+}

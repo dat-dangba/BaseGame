@@ -1,11 +1,8 @@
-using UnityEngine;
+using UnityEditor;
+using System.IO;
 
-namespace DBD.BaseGame
+namespace DBD.BaseGame.Editor
 {
-    using UnityEditor;
-    using System.IO;
-    using UnityEngine;
-
     [InitializeOnLoad]
     public static class CopyScriptTemplates
     {
@@ -13,12 +10,12 @@ namespace DBD.BaseGame
 
         static CopyScriptTemplates()
         {
-            EditorApplication.delayCall += Install;
+            EditorApplication.delayCall += Copy;
         }
 
-        private static void Install()
+        private static void Copy()
         {
-            string sourcePath = "Packages/com.datdb.basegame/ScriptTemplates";
+            string sourcePath = "Packages/com.datdb.basegame/ScriptTemplates~";
 
             string targetPath = "Assets/ScriptTemplates";
 
@@ -43,6 +40,12 @@ namespace DBD.BaseGame
                 "DBD Base Game",
                 "Script Templates đã được cài đặt.\nVui lòng restart Unity Editor để sử dụng.",
                 "OK");
+        }
+
+        [MenuItem("Tools/ScriptTemplate/Generate")]
+        private static void CreateFitter(MenuCommand command)
+        {
+            Copy();
         }
     }
 }
