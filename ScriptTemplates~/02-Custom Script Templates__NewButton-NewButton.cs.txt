@@ -1,6 +1,4 @@
-using DBD.BaseGame;
-
-public class #SCRIPTNAME# : BaseButton
+public class #SCRIPTNAME# : BaseSoundButton
 {
     protected override void OnClick()
     {
