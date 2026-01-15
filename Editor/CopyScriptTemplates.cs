@@ -7,10 +7,15 @@ namespace DBD.BaseGame
     using UnityEngine;
 
     [InitializeOnLoad]
-    public static class InstallScriptTemplates
+    public static class CopyScriptTemplates
     {
-        static InstallScriptTemplates()
+        private const string InstalledKey = "DBD_BaseAds_ScriptTemplatesCopied";
+
+        static CopyScriptTemplates()
         {
+            if (EditorPrefs.GetBool(InstalledKey))
+                return;
+
             EditorApplication.delayCall += Install;
         }
 
@@ -35,9 +40,9 @@ namespace DBD.BaseGame
                 }
             }
 
+            EditorPrefs.SetBool(InstalledKey, true);
             AssetDatabase.Refresh();
-
-            Debug.Log("datdb - [DBD] Script Templates installed");
+            Debug.Log("datdb - [DBD] Script Templates copied");
         }
     }
 }
