@@ -13,9 +13,6 @@ namespace DBD.BaseGame
 
         static CopyScriptTemplates()
         {
-            if (EditorPrefs.GetBool(InstalledKey))
-                return;
-
             EditorApplication.delayCall += Install;
         }
 
@@ -25,7 +22,7 @@ namespace DBD.BaseGame
 
             string targetPath = "Assets/ScriptTemplates";
 
-            if (!Directory.Exists(sourcePath))
+            if (!Directory.Exists(sourcePath) || Directory.Exists(targetPath))
                 return;
 
             Directory.CreateDirectory(targetPath);
@@ -42,8 +39,6 @@ namespace DBD.BaseGame
 
             EditorPrefs.SetBool(InstalledKey, true);
             AssetDatabase.Refresh();
-            Debug.Log("datdb - [DBD] Script Templates copied");
-
             EditorUtility.DisplayDialog(
                 "DBD Base Game",
                 "Script Templates đã được cài đặt.\nVui lòng restart Unity Editor để sử dụng.",
