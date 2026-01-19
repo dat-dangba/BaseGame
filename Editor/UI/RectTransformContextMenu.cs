@@ -7,7 +7,7 @@ namespace DBD.BaseGame.Editor
     public static class RectTransformContextMenu
     {
         [MenuItem("CONTEXT/RectTransform/Anchor View")]
-        private static void StretchToParent(MenuCommand command)
+        private static void AnchorView(MenuCommand command)
         {
             RectTransform rectTransform = command.context as RectTransform;
             if (rectTransform == null || rectTransform.parent == null) return;
@@ -16,6 +16,40 @@ namespace DBD.BaseGame.Editor
 
             Undo.RecordObject(rectTransform, "Anchor View");
 
+            SetAnchorView(parent, rectTransform);
+        }
+
+        [MenuItem("CONTEXT/RectTransform/Anchor All View")]
+        private static void AnchorAllView(MenuCommand command)
+        {
+            RectTransform rectTransform = command.context as RectTransform;
+            if (rectTransform == null || rectTransform.parent == null) return;
+            RectTransform parent = rectTransform.parent as RectTransform;
+            if (parent == null) return;
+
+            Undo.RecordObject(rectTransform, "Anchor All View");
+
+            SetAnchorViewAndAllChild(parent, rectTransform);
+        }
+
+        private static void SetAnchorViewAndAllChild(RectTransform parent, RectTransform rectTransform)
+        {
+            SetAnchorView(parent, rectTransform);
+            foreach (RectTransform rect in rectTransform)
+            {
+                if (rect.childCount > 0)
+                {
+                    SetAnchorViewAndAllChild(rectTransform, rect);
+                }
+                else
+                {
+                    SetAnchorView(rectTransform, rect);
+                }
+            }
+        }
+
+        private static void SetAnchorView(RectTransform parent, RectTransform rectTransform)
+        {
             //set anchor center
             Vector3 pos = rectTransform.position;
             Vector2 size = rectTransform.rect.size;
