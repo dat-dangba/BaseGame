@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DBD.BaseGame.Editor
 {
@@ -50,6 +51,11 @@ namespace DBD.BaseGame.Editor
 
         private static void SetAnchorView(RectTransform parent, RectTransform rectTransform)
         {
+            if (rectTransform.TryGetComponent<AspectRatioFitter>(out var aspectRatio))
+            {
+                return;
+            }
+
             //set anchor center
             Vector3 pos = rectTransform.position;
             Vector2 size = rectTransform.rect.size;
