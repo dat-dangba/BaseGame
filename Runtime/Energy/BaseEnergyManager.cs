@@ -158,6 +158,16 @@ namespace DBD.BaseGame
         public string GetUnlimitedRemainingTime()
         {
             TimeSpan timeSpan = GetUnlimitedRemainingTimeSpan();
+            if (timeSpan.Days > 0)
+            {
+                return $"{timeSpan.Days:00}d {timeSpan.Hours:00}h";
+            }
+
+            if (timeSpan.Hours > 0)
+            {
+                return $"{timeSpan.Hours:00}h {timeSpan.Minutes:00}m";
+            }
+
             return $"{timeSpan.Minutes:00}:{timeSpan.Seconds:00}";
         }
 
