@@ -15,12 +15,10 @@ namespace DBD.BaseGame.Editor
             RectTransform parent = rectTransform.parent as RectTransform;
             if (parent == null) return;
 
-            Undo.RecordObject(rectTransform, "Anchor View");
-
             SetAnchorView(parent, rectTransform);
         }
 
-        [MenuItem("CONTEXT/RectTransform/Anchor All View")]
+        [MenuItem("CONTEXT/RectTransform/Anchor View And All Child")]
         private static void AnchorAllView(MenuCommand command)
         {
             RectTransform rectTransform = command.context as RectTransform;
@@ -28,14 +26,30 @@ namespace DBD.BaseGame.Editor
             RectTransform parent = rectTransform.parent as RectTransform;
             if (parent == null) return;
 
-            Undo.RecordObject(rectTransform, "Anchor All View");
-
             SetAnchorViewAndAllChild(parent, rectTransform);
+        }
+
+        [MenuItem("CONTEXT/RectTransform/Anchor All Child")]
+        private static void AnchorAllChild(MenuCommand command)
+        {
+            RectTransform rectTransform = command.context as RectTransform;
+            if (rectTransform == null || rectTransform.parent == null) return;
+            RectTransform parent = rectTransform.parent as RectTransform;
+            if (parent == null) return;
+
+            SetAnchorAllChild(rectTransform);
         }
 
         private static void SetAnchorViewAndAllChild(RectTransform parent, RectTransform rectTransform)
         {
             SetAnchorView(parent, rectTransform);
+            SetAnchorAllChild(rectTransform);
+        }
+
+        private static void SetAnchorAllChild(RectTransform rectTransform)
+        {
+            if (!CanAnchorChild(rectTransform.gameObject)) return;
+
             foreach (RectTransform rect in rectTransform)
             {
                 if (rect.childCount > 0)
@@ -51,7 +65,7 @@ namespace DBD.BaseGame.Editor
 
         private static void SetAnchorView(RectTransform parent, RectTransform rectTransform)
         {
-            if (rectTransform.TryGetComponent<AspectRatioFitter>(out var aspectRatio))
+            if (!CanAnchorView(rectTransform.gameObject))
             {
                 return;
             }
@@ -85,6 +99,38 @@ namespace DBD.BaseGame.Editor
 
             rectTransform.offsetMin = Vector2.zero;
             rectTransform.offsetMax = Vector2.zero;
+
+            Undo.RecordObject(rectTransform, $"Anchor View - {rectTransform.gameObject.name}");
+        }
+
+        private static bool CanAnchorChild(GameObject gameObject)
+        {
+            if (gameObject.TryGetComponent<ScrollRect>(out var scrollRect))
+            {
+                return false;
+            }
+
+            if (gameObject.TryGetComponent<LayoutGroup>(out var layoutGroup))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool CanAnchorView(GameObject gameObject)
+        {
+            if (gameObject.TryGetComponent<SafeArea>(out var safeArea))
+            {
+                return false;
+            }
+
+            if (gameObject.TryGetComponent<AspectRatioFitter>(out var aspectRatio))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
