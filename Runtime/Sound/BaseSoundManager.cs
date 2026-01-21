@@ -22,19 +22,14 @@ namespace DBD.BaseGame
 
         [SerializeField] private List<AudioSource> sfxPool = new();
 
-        #region Create Mixer
-
         protected override void Reset()
         {
             base.Reset();
+#if UNITY_EDITOR
             audioMixer =
                 AssetDatabase.LoadAssetAtPath<AudioMixer>("Packages/com.datdb.basegame/Runtime/Sound/AudioMixer.mixer");
-// #if UNITY_EDITOR
-//             CreateMixer();
-// #endif
+#endif
         }
-
-        #endregion
 
         #region Abstract
 
