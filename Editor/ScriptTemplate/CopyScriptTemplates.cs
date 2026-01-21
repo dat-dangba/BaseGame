@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using System.IO;
 
@@ -49,3 +50,4 @@ namespace DBD.BaseGame.Editor
         }
     }
 }
+#endif
