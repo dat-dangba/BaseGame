@@ -3,7 +3,9 @@ using System.Diagnostics;
 using System.Linq;
 using Teo.AutoReference.Internals.Collections;
 using Teo.AutoReference.System;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using Object = UnityEngine.Object;
 
 namespace Teo.AutoReference
@@ -30,12 +32,12 @@ namespace Teo.AutoReference
 
         protected override bool Validate(in FieldContext context, Object value)
         {
-// #if UNITY_EDITOR
+#if UNITY_EDITOR
             string path = AssetDatabase.GetAssetPath(value);
             return _paths.Any(p => path.Equals(p, _comparison));
-// #else
-//             return true;
-// #endif
+#else
+             return true;
+#endif
         }
     }
 }

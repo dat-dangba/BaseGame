@@ -1,6 +1,15 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using Teo.AutoReference;
 using UnityEngine;
+using UnityEngine.Audio;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace DBD.BaseGame
 {
@@ -9,7 +18,23 @@ namespace DBD.BaseGame
     {
         [SerializeField, Get] private AudioSource bgmSource;
 
-        private List<AudioSource> sfxPool = new();
+        [SerializeField] private AudioMixer audioMixer;
+
+        [SerializeField] private List<AudioSource> sfxPool = new();
+
+        #region Create Mixer
+
+        protected override void Reset()
+        {
+            base.Reset();
+            audioMixer =
+                AssetDatabase.LoadAssetAtPath<AudioMixer>("Packages/com.datdb.basegame/Runtime/Sound/AudioMixer.mixer");
+// #if UNITY_EDITOR
+//             CreateMixer();
+// #endif
+        }
+
+        #endregion
 
         #region Abstract
 
@@ -82,12 +107,20 @@ namespace DBD.BaseGame
             UpdateSfx(active);
         }
 
-        public void PlayMusic(AudioClip clip)
+        public void PlayMusic(AudioClip clip, float volume = 0)
         {
             if (!IsMusicOn()) return;
 
             if (bgmSource.clip == clip && bgmSource.isPlaying) return;
 
+            if (bgmSource.outputAudioMixerGroup == null)
+            {
+                AudioMixerGroup group = FindAudioMixerGroupByName("Music");
+                bgmSource.outputAudioMixerGroup = group;
+            }
+
+            // Debug.Log($"datdb - {bgmSource.outputAudioMixerGroup.name}");
+            SetVolumeAudioMixerGroup(bgmSource.outputAudioMixerGroup, volume);
             bgmSource.clip = clip;
             bgmSource.loop = true;
             bgmSource.Play();
@@ -109,11 +142,12 @@ namespace DBD.BaseGame
             }
         }
 
-        public void PlaySFX(AudioClip clip)
+        public void PlaySFX(AudioClip clip, float volume = 0)
         {
             if (!IsSfxOn()) return;
 
             var source = GetFreeSFXSource();
+            SetVolumeAudioMixerGroup(source.outputAudioMixerGroup, volume);
             source.clip = clip;
             source.loop = false;
             source.Play();
@@ -132,10 +166,27 @@ namespace DBD.BaseGame
             go.transform.SetParent(transform);
             var source = go.AddComponent<AudioSource>();
             source.playOnAwake = false;
+            if (source.outputAudioMixerGroup == null)
+            {
+                source.outputAudioMixerGroup = FindAudioMixerGroupByName($"SFX {sfxPool.Count}");
+            }
 
             sfxPool.Add(source);
 
             return source;
+        }
+
+        private AudioMixerGroup FindAudioMixerGroupByName(string name)
+        {
+            return audioMixer.FindMatchingGroups("Master").First(group => group.name == name);
+        }
+
+        private void SetVolumeAudioMixerGroup(AudioMixerGroup audioMixerGroup, float volume)
+        {
+            // float clampedVolume = Mathf.Clamp(volume, 0.0001f, 1f);
+            // float dB = Mathf.Log10(clampedVolume) * 20;
+            // Debug.Log($"datdb - {dB}");
+            audioMixer.SetFloat(audioMixerGroup.name, volume);
         }
     }
 }
