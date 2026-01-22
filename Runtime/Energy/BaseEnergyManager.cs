@@ -65,15 +65,9 @@ namespace DBD.BaseGame
 
         public void Init(EnergyData energyData)
         {
-            // data = new EnergyData
-            // {
-            //     Energy = GetEnergy(),
-            //     LastRegenTime = GetLastRegenTime(),
-            //     UnlimitedEndTime = GetUnlimitedEndTime(),
-            // };
             data = energyData;
             ValidateTime();
-            UpdateEnergy();
+            UpdateEnergy(true);
 
             isInit = true;
         }
@@ -205,11 +199,11 @@ namespace DBD.BaseGame
 
         #region Core Logic
 
-        private void UpdateEnergy()
+        private void UpdateEnergy(bool isStartGame = false)
         {
             if (!isInit) return;
 
-            if (data.NeedConsumeEnergy)
+            if (isStartGame && data.NeedConsumeEnergy)
             {
                 data.NeedConsumeEnergy = false;
                 ConsumeEnergy();
