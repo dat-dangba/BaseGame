@@ -49,7 +49,7 @@ namespace DBD.BaseGame
 
         protected abstract void UpdateVibrate(bool active);
 
-        protected abstract bool IsVibrateOn();
+        public abstract bool IsVibrateOn();
 
         public void SetVibrate(bool active)
         {
