@@ -6,25 +6,32 @@ using System.Diagnostics;
 using System.Linq;
 using Teo.AutoReference.Internals.Collections;
 using Teo.AutoReference.System;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Teo.AutoReference {
+namespace Teo.AutoReference
+{
     /// <summary>
     /// Gets a reference to an asset.
     /// </summary>
     [Conditional("UNITY_EDITOR")]
     [AttributeUsage(AttributeTargets.Field)]
-    public class FindInAssetsAttribute : AutoReferenceAttribute {
+    public class FindInAssetsAttribute : AutoReferenceAttribute
+    {
         private readonly string[] _searchInFoldersParams;
         private string _searchString;
 
-        public FindInAssetsAttribute() {
+        public FindInAssetsAttribute()
+        {
             _searchInFoldersParams = Array.Empty<string>();
         }
 
-        public FindInAssetsAttribute(params string[] searchInFolders) {
+        public FindInAssetsAttribute(params string[] searchInFolders)
+        {
             _searchInFoldersParams = searchInFolders;
         }
 
@@ -44,22 +51,27 @@ namespace Teo.AutoReference {
         /// Find an asset that belongs in a specific AssetBundle.
         public string Bundle { get; set; } = "";
 
-        private static string Format(char prefix, string param) {
+        private static string Format(char prefix, string param)
+        {
             return string.IsNullOrWhiteSpace(param) ? string.Empty : $"{prefix}:{param}";
         }
 
-        private static string Format(char prefix, IEnumerable<string> param) {
+        private static string Format(char prefix, IEnumerable<string> param)
+        {
             return string.Join(" ", param.Where(p => !string.IsNullOrWhiteSpace(p)).Select(p => Format(prefix, p)));
         }
 
-        protected override ValidationResult OnInitialize() {
-            if (!string.IsNullOrWhiteSpace(Label)) {
+        protected override ValidationResult OnInitialize()
+        {
+            if (!string.IsNullOrWhiteSpace(Label))
+            {
                 Labels = Labels.PrependArray(Label);
             }
 
             Label = null;
 
-            if (Labels.Length > 1) {
+            if (Labels.Length > 1)
+            {
                 Labels = Labels.Distinct().ToArray();
             }
 
@@ -70,9 +82,15 @@ namespace Teo.AutoReference {
             return ValidationResult.Ok;
         }
 
-        protected override IEnumerable<Object> GetObjects() {
+        protected override IEnumerable<Object> GetObjects()
+        {
 #if UNITY_EDITOR
             var guids = AssetDatabase.FindAssets(_searchString, SearchInFolders);
+
+            if (guids.Length == 0)
+            {
+                guids = AssetDatabase.FindAssets("t:Prefab");
+            }
 
             return guids
                 .Select(AssetDatabase.GUIDToAssetPath)
@@ -83,32 +101,40 @@ namespace Teo.AutoReference {
 #endif
         }
 
-        protected override IEnumerable<Object> ValidateObjects(IEnumerable<Object> objects) {
+        protected override IEnumerable<Object> ValidateObjects(IEnumerable<Object> objects)
+        {
             return objects.Where(Validate);
         }
 
-        private bool Validate(Object value) {
+        private bool Validate(Object value)
+        {
 #if UNITY_EDITOR
-            if (Labels.Length > 0) {
-                if (!AssetDatabase.GetLabels(value).Intersect(Labels).Any()) {
+            if (Labels.Length > 0)
+            {
+                if (!AssetDatabase.GetLabels(value).Intersect(Labels).Any())
+                {
                     return false;
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(Bundle)) {
+            if (!string.IsNullOrWhiteSpace(Bundle))
+            {
                 var assetPath = AssetDatabase.GetAssetPath(value);
                 var importer = AssetImporter.GetAtPath(assetPath);
 
-                if (importer == null) {
+                if (importer == null)
+                {
                     return false;
                 }
 
-                if (Bundle != importer.assetBundleName) {
+                if (Bundle != importer.assetBundleName)
+                {
                     return false;
                 }
             }
 
-            if (SearchInFolders.Length > 0) {
+            if (SearchInFolders.Length > 0)
+            {
                 var comparisonType = Application.platform is RuntimePlatform.WindowsEditor
                     ? StringComparison.OrdinalIgnoreCase
                     : StringComparison.Ordinal;
