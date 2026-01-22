@@ -15,6 +15,7 @@ namespace DBD.BaseGame
         private DateTime unlimitedEndTime;
 
         [SerializeField] private EnergyData data = new();
+        public EnergyData Data => data;
         public int Energy => data.Energy;
 
         #region Singleton
