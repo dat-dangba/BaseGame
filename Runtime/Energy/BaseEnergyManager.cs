@@ -138,6 +138,12 @@ namespace DBD.BaseGame
             UpdateEnergyData(data);
         }
 
+        public void SetNeedConsumeEnergy(bool needConsume)
+        {
+            data.NeedConsumeEnergy = needConsume;
+            UpdateEnergyData(data);
+        }
+
         public void AddUnlimited(int seconds)
         {
             if (!isInit) return;
