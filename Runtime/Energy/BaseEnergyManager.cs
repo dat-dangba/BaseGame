@@ -6,8 +6,8 @@ namespace DBD.BaseGame
 {
     public abstract class BaseEnergyManager<INSTANCE> : BaseMonoBehaviour where INSTANCE : BaseMonoBehaviour
     {
-        [SerializeField] private int maxEnergy = 5;
-        [SerializeField] private int regenMinutes = 30;
+        // [SerializeField] private int maxEnergy = 5;
+        // [SerializeField] private int regenMinutes = 30;
 
         private bool isInit;
 
@@ -60,6 +60,10 @@ namespace DBD.BaseGame
 
         #endregion
 
+        protected abstract int GetMaxEnergy();
+
+        protected abstract int GetRegenMinutes();
+
         protected abstract DateTime GetDateTime();
 
         protected abstract void UpdateEnergyData(EnergyData energyData);
@@ -94,7 +98,7 @@ namespace DBD.BaseGame
 
             data.Energy--;
 
-            if (data.Energy == maxEnergy - 1)
+            if (data.Energy == GetMaxEnergy() - 1)
             {
                 lastRegenTime = GetDateTime();
                 data.LastRegenTime = FormatDateTime(lastRegenTime);
@@ -109,7 +113,7 @@ namespace DBD.BaseGame
 
             data.Energy = Mathf.Min(
                 data.Energy + amount,
-                maxEnergy
+                GetMaxEnergy()
             );
 
             UpdateEnergyData(data);
@@ -124,7 +128,7 @@ namespace DBD.BaseGame
                 0
             );
 
-            if (data.Energy == maxEnergy - 1)
+            if (data.Energy == GetMaxEnergy() - 1)
             {
                 lastRegenTime = GetDateTime();
                 data.LastRegenTime = FormatDateTime(lastRegenTime);
@@ -188,10 +192,10 @@ namespace DBD.BaseGame
 
         public TimeSpan GetNextRegenTimeSpan()
         {
-            if (!isInit || data.Energy >= maxEnergy)
+            if (!isInit || data.Energy >= GetMaxEnergy())
                 return TimeSpan.Zero;
 
-            var nextTime = lastRegenTime.AddMinutes(regenMinutes);
+            var nextTime = lastRegenTime.AddMinutes(GetRegenMinutes());
 
             return nextTime - GetDateTime();
         }
@@ -212,23 +216,23 @@ namespace DBD.BaseGame
             // if (IsUnlimitedEnergy)
             //     return;
 
-            if (data.Energy >= maxEnergy)
+            if (data.Energy >= GetMaxEnergy())
                 return;
 
             var now = GetDateTime();
             var elapsedMinutes = (now - lastRegenTime).TotalMinutes;
 
-            if (elapsedMinutes < regenMinutes)
+            if (elapsedMinutes < GetRegenMinutes())
                 return;
 
-            int regenCount = (int)(elapsedMinutes / regenMinutes);
+            int regenCount = (int)(elapsedMinutes / GetRegenMinutes());
 
             data.Energy = Mathf.Min(
                 data.Energy + regenCount,
-                maxEnergy
+                GetMaxEnergy()
             );
 
-            lastRegenTime = lastRegenTime.AddMinutes(regenCount * regenMinutes);
+            lastRegenTime = lastRegenTime.AddMinutes(regenCount * GetRegenMinutes());
             data.LastRegenTime = FormatDateTime(lastRegenTime);
 
             UpdateEnergyData(data);
