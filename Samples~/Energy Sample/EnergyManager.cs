@@ -10,6 +10,16 @@ namespace DBD.BaseGame.Sample
         public TextMeshProUGUI nextRegenTime;
         public TextMeshProUGUI unlimitedRemainingTime;
 
+        public override int GetMaxEnergy()
+        {
+            return 5;
+        }
+
+        protected override int GetRegenMinutes()
+        {
+            return 30;
+        }
+
         protected override DateTime GetDateTime()
         {
             return DateTime.UtcNow;
