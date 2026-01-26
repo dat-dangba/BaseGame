@@ -3,7 +3,7 @@ using System;
 namespace DBD.BaseGame
 {
     [Serializable]
-    public class EnergyData
+    public class EnergyModel
     {
         public int Energy;
         public string LastRegenTime;

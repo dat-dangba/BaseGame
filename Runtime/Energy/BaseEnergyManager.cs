@@ -14,8 +14,8 @@ namespace DBD.BaseGame
         private DateTime lastRegenTime;
         private DateTime unlimitedEndTime;
 
-        [SerializeField] private EnergyData data = new();
-        public EnergyData Data => data;
+        [SerializeField] private EnergyModel data = new();
+        public EnergyModel Data => data;
         public int Energy => data.Energy;
 
         #region Singleton
@@ -66,11 +66,11 @@ namespace DBD.BaseGame
 
         protected abstract DateTime GetDateTime();
 
-        protected abstract void UpdateEnergyData(EnergyData energyData);
+        protected abstract void UpdateEnergyData(EnergyModel data);
 
-        public void Init(EnergyData energyData)
+        public void Init(EnergyModel energyModel)
         {
-            data = energyData;
+            data = energyModel;
             ValidateTime();
             UpdateEnergy(true);
 
