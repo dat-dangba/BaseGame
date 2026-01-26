@@ -60,7 +60,7 @@ namespace DBD.BaseGame
 
         #endregion
 
-        protected abstract int GetMaxEnergy();
+        public abstract int GetMaxEnergy();
 
         protected abstract int GetRegenMinutes();
 
