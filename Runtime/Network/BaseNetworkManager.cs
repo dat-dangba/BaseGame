@@ -119,10 +119,12 @@ namespace DBD.BaseGame
             }
 
             string url = GetCheckUrl();
+            Debug.Log($"Network - url {url}");
             using UnityWebRequest request = UnityWebRequest.Head(url);
             request.timeout = GetTimeOutRequest();
             yield return request.SendWebRequest();
-
+            Debug.Log(
+                $"Network - Request Completed {request.result is not (UnityWebRequest.Result.ConnectionError or UnityWebRequest.Result.ProtocolError)}");
             SetNetworkAvailable(!(request.result == UnityWebRequest.Result.ConnectionError ||
                                   request.result == UnityWebRequest.Result.ProtocolError));
         }
