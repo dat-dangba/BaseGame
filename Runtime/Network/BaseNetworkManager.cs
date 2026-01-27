@@ -45,6 +45,8 @@ namespace DBD.BaseGame
                 {
                     DontDestroyOnLoad(gameObject);
                 }
+
+                isAvailable = IsNetworkAvailable();
             }
             else
             {
@@ -68,7 +70,8 @@ namespace DBD.BaseGame
         public void StartCheckInternet()
         {
             isStartCheckInternet = true;
-            InvokeRepeating(nameof(CheckInternet), 0.5f, 5);
+            StartCoroutine(CheckInternetRoutine());
+            InvokeRepeating(nameof(CheckInternet), 5, 5);
         }
 
         public void Refresh()
