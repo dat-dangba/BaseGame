@@ -9,6 +9,7 @@ namespace DBD.BaseGame
         private bool isRequesting;
         private bool isAvailable;
         private bool isStartCheckInternet;
+        private bool isFirstCheck = true;
 
         public bool IsAvailable => isAvailable;
 
@@ -136,8 +137,9 @@ namespace DBD.BaseGame
 
         protected virtual void SetNetworkAvailable(bool isAvailable)
         {
-            if (this.isAvailable == isAvailable) return;
+            if (this.isAvailable == isAvailable && !isFirstCheck) return;
 
+            isFirstCheck = false;
             this.isAvailable = isAvailable;
 
             Debug.Log($"Network - OnNetworkStateChanged {this.isAvailable}");
