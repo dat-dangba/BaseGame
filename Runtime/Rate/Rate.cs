@@ -10,6 +10,8 @@ namespace DBD.BaseGame
 
         private int star = -1;
 
+        public int Star => star + 1;
+
         private void Reset()
         {
             stars = new List<GameObject>();
