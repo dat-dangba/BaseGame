@@ -104,10 +104,16 @@ namespace DBD.BaseGame
 
         public void PlayMusic(AudioClip clip, float volume = 0)
         {
+            SetupMusic(clip, volume);
             if (!IsMusicOn()) return;
 
             if (bgmSource.clip == clip && bgmSource.isPlaying) return;
 
+            bgmSource.Play();
+        }
+
+        private void SetupMusic(AudioClip clip, float volume = 0)
+        {
             if (bgmSource.outputAudioMixerGroup == null)
             {
                 AudioMixerGroup group = FindAudioMixerGroupByName("Music");
@@ -118,7 +124,7 @@ namespace DBD.BaseGame
             SetVolumeAudioMixerGroup(bgmSource.outputAudioMixerGroup, volume);
             bgmSource.clip = clip;
             bgmSource.loop = true;
-            bgmSource.Play();
+            bgmSource.playOnAwake = false;
         }
 
         public void PlayMusic()
