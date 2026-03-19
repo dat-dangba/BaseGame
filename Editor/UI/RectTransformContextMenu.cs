@@ -70,6 +70,7 @@ namespace DBD.BaseGame.Editor
                 return;
             }
 
+            Undo.RecordObject(rectTransform, $"Anchor View - {rectTransform.gameObject.name}");
             //set anchor center
             Vector3 pos = rectTransform.position;
             Vector2 size = rectTransform.rect.size;
@@ -100,7 +101,11 @@ namespace DBD.BaseGame.Editor
             rectTransform.offsetMin = Vector2.zero;
             rectTransform.offsetMax = Vector2.zero;
 
-            Undo.RecordObject(rectTransform, $"Anchor View - {rectTransform.gameObject.name}");
+            EditorUtility.SetDirty(rectTransform);
+            if (!Application.isPlaying)
+            {
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(rectTransform.gameObject.scene);
+            }
         }
 
         private static bool CanAnchorChild(GameObject gameObject)
