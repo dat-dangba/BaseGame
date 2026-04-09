@@ -72,7 +72,7 @@ namespace DBD.BaseGame
         {
             isStartCheckInternet = true;
             StartCoroutine(CheckInternetRoutine());
-            InvokeRepeating(nameof(CheckInternet), 5, 5);
+            // InvokeRepeating(nameof(CheckInternet), 5, 5);
         }
 
         public void Refresh()
